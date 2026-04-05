@@ -1,0 +1,376 @@
+[
+  {
+    "id": "beb1e20a-1b40-4f9c-a7bc-6ef797fb9f45",
+    "userId": "local-test-user",
+    "input": {
+      "glucose": 92,
+      "glucoseSource": "glucometer",
+      "insulin": {
+        "dosage": 4,
+        "type": "rapid-acting",
+        "hoursAgo": 1.5
+      },
+      "mealHoursAgo": 4,
+      "activity": {
+        "type": "walking",
+        "duration": 30,
+        "hoursAgo": 1
+      }
+    },
+    "result": {
+      "riskLevel": "MEDIUM",
+      "riskScore": 6.2,
+      "confidence": 56,
+      "factors": {
+        "glucose_factor": 1,
+        "insulin_factor": 1.2,
+        "meal_gap_factor": 2,
+        "activity_factor": 1,
+        "trend_factor": 1,
+        "time_factor": 0
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 7.2,
+          "glucose": 87.37472511844865
+        },
+        {
+          "minutes": 60,
+          "risk": 8.2,
+          "glucose": 72.61342330437918
+        },
+        {
+          "minutes": 90,
+          "risk": 9.2,
+          "glucose": 66.09831150168822
+        }
+      ],
+      "explanation": "All factors are within safe ranges.",
+      "actions": [
+        "Have a small snack with 10-15g carbs",
+        "Monitor glucose closely for the next hour"
+      ]
+    },
+    "createdAt": "2026-04-05T07:49:38.579Z"
+  },
+  {
+    "id": "4ecd5120-8de7-4fb5-8c4c-4003cd483020",
+    "userId": "copilot-test",
+    "input": {
+      "mode": "manual",
+      "glucose": 88,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 4
+    },
+    "result": {
+      "riskLevel": "MEDIUM",
+      "riskScore": 5,
+      "confidence": 51,
+      "factors": {
+        "glucose_factor": 2,
+        "insulin_factor": 0,
+        "meal_gap_factor": 2,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 0
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 6,
+          "glucose": 83.32060531632648
+        },
+        {
+          "minutes": 60,
+          "risk": 7,
+          "glucose": 76.88390917219184
+        },
+        {
+          "minutes": 90,
+          "risk": 8,
+          "glucose": 64.72507200131713
+        }
+      ],
+      "explanation": "All factors are within safe ranges.",
+      "actions": [
+        "Have a small snack with 10-15g carbs",
+        "Monitor glucose closely for the next hour"
+      ]
+    },
+    "createdAt": "2026-04-05T08:03:50.533Z"
+  },
+  {
+    "id": "081dd0cb-45a6-40d1-85be-71d39ea557c1",
+    "userId": "copilot-test",
+    "input": {
+      "mode": "manual",
+      "glucose": 88,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 4
+    },
+    "result": {
+      "riskLevel": "MEDIUM",
+      "riskScore": 5,
+      "confidence": 68,
+      "factors": {
+        "glucose_factor": 2,
+        "insulin_factor": 0,
+        "meal_gap_factor": 2,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 0
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 6,
+          "glucose": 77.93106353405462
+        },
+        {
+          "minutes": 60,
+          "risk": 7,
+          "glucose": 68.58684649654325
+        },
+        {
+          "minutes": 90,
+          "risk": 8,
+          "glucose": 62.587059041152365
+        }
+      ],
+      "explanation": "All factors are within safe ranges.",
+      "actions": [
+        "Have a small snack with 10-15g carbs",
+        "Monitor glucose closely for the next hour"
+      ]
+    },
+    "createdAt": "2026-04-05T08:04:31.778Z"
+  },
+  {
+    "id": "7ca70fba-0c0d-4026-aca7-d59cb15a73f3",
+    "userId": "audit-user",
+    "input": {
+      "mode": "manual",
+      "glucose": 88,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 4
+    },
+    "result": {
+      "riskLevel": "MEDIUM",
+      "riskScore": 7,
+      "confidence": 56,
+      "factors": {
+        "glucose_factor": 2,
+        "insulin_factor": 0,
+        "meal_gap_factor": 2,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 2
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 8,
+          "glucose": 82.03745006578478
+        },
+        {
+          "minutes": 60,
+          "risk": 9,
+          "glucose": 62.61332312297259
+        },
+        {
+          "minutes": 90,
+          "risk": 10,
+          "glucose": 51.81206963770335
+        }
+      ],
+      "explanation": "MEDIUM risk detected. Current time is a common risk window.",
+      "actions": [
+        "Have a small snack with 10-15g carbs",
+        "Monitor glucose closely for the next hour"
+      ]
+    },
+    "createdAt": "2026-04-05T09:04:11.248Z"
+  },
+  {
+    "id": "29459491-6eb7-4d52-90d8-580da3c9fc72",
+    "userId": "audit-user",
+    "input": {
+      "mode": "manual",
+      "glucose": 88,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 4
+    },
+    "result": {
+      "riskLevel": "MEDIUM",
+      "riskScore": 7,
+      "confidence": 58,
+      "factors": {
+        "glucose_factor": 2,
+        "insulin_factor": 0,
+        "meal_gap_factor": 2,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 2
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 8,
+          "glucose": 79.80343134872244
+        },
+        {
+          "minutes": 60,
+          "risk": 9,
+          "glucose": 71.6033144002291
+        },
+        {
+          "minutes": 90,
+          "risk": 10,
+          "glucose": 53.75923235982363
+        }
+      ],
+      "explanation": "MEDIUM risk detected. Current time is a common risk window.",
+      "actions": [
+        "Have a small snack with 10-15g carbs",
+        "Monitor glucose closely for the next hour"
+      ]
+    },
+    "createdAt": "2026-04-05T09:04:31.990Z"
+  },
+  {
+    "id": "a8e2d0e0-c36b-4ed9-842f-ec02e9d738d9",
+    "userId": "audit-user",
+    "input": {
+      "mode": "manual",
+      "glucose": 102,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 3
+    },
+    "result": {
+      "riskLevel": "LOW",
+      "riskScore": 4,
+      "confidence": 70,
+      "factors": {
+        "glucose_factor": 0,
+        "insulin_factor": 0,
+        "meal_gap_factor": 1,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 2
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 5,
+          "glucose": 98.39026564832942
+        },
+        {
+          "minutes": 60,
+          "risk": 6,
+          "glucose": 93.69419059872978
+        },
+        {
+          "minutes": 90,
+          "risk": 7,
+          "glucose": 86.76688533587459
+        }
+      ],
+      "explanation": "LOW risk detected. Current time is a common risk window.",
+      "actions": [
+        "Continue monitoring as usual"
+      ]
+    },
+    "createdAt": "2026-04-05T09:15:05.187Z"
+  },
+  {
+    "id": "6d8543f6-d755-4af5-a195-d4e5737ff8f1",
+    "userId": "supabase-audit-user",
+    "input": {
+      "mode": "manual",
+      "glucose": 101,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 2
+    },
+    "result": {
+      "riskLevel": "LOW",
+      "riskScore": 3,
+      "confidence": 52,
+      "factors": {
+        "glucose_factor": 0,
+        "insulin_factor": 0,
+        "meal_gap_factor": 0,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 2
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 4,
+          "glucose": 93.24240824310107
+        },
+        {
+          "minutes": 60,
+          "risk": 5,
+          "glucose": 90.44083238287018
+        },
+        {
+          "minutes": 90,
+          "risk": 6,
+          "glucose": 86.49092325307814
+        }
+      ],
+      "explanation": "LOW risk detected. Current time is a common risk window.",
+      "actions": [
+        "Continue monitoring as usual"
+      ]
+    },
+    "createdAt": "2026-04-05T09:16:21.118Z"
+  },
+  {
+    "id": "d1911eb5-d88e-447a-a7a0-35f673726a16",
+    "userId": "supabase-audit-user-2",
+    "input": {
+      "mode": "manual",
+      "glucose": 99,
+      "glucoseSource": "glucometer",
+      "mealHoursAgo": 2
+    },
+    "result": {
+      "riskLevel": "LOW",
+      "riskScore": 4,
+      "confidence": 55,
+      "factors": {
+        "glucose_factor": 1,
+        "insulin_factor": 0,
+        "meal_gap_factor": 0,
+        "activity_factor": 0,
+        "trend_factor": 1,
+        "time_factor": 2
+      },
+      "predictions": [
+        {
+          "minutes": 30,
+          "risk": 5,
+          "glucose": 95.16346964620188
+        },
+        {
+          "minutes": 60,
+          "risk": 6,
+          "glucose": 90.21112195404696
+        },
+        {
+          "minutes": 90,
+          "risk": 7,
+          "glucose": 85.18251223055185
+        }
+      ],
+      "explanation": "LOW risk detected. Current time is a common risk window.",
+      "actions": [
+        "Continue monitoring as usual"
+      ]
+    },
+    "createdAt": "2026-04-05T09:16:33.066Z"
+  }
+]

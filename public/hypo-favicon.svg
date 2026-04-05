@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="HypoShield AI icon">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#13e3ce"/>
+      <stop offset="100%" stop-color="#0aa3b3"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0b1720"/>
+  <path d="M32 8l17 7v13c0 12-7.5 22.5-17 28C22.5 50.5 15 40 15 28V15l17-7z" fill="url(#g)"/>
+  <path d="M24 22h5v7h6v-7h5v20h-5v-8h-6v8h-5V22z" fill="#052128"/>
+</svg>

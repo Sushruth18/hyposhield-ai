@@ -1,0 +1,167 @@
+import type { PredictionResult, PredictionMode } from "@/lib/risk-engine";
+import { supabase } from "@/integrations/supabase/client";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+
+function buildApiUrl(path: string): string {
+  const normalizedBase = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${normalizedBase}${normalizedPath}`;
+}
+
+export interface PredictionInput {
+  mode?: PredictionMode;
+  glucose?: number;
+  glucoseSource: "cgm" | "glucometer";
+  insulin?: {
+    dosage: number;
+    type: "rapid-acting" | "long-acting";
+    hoursAgo: number;
+  };
+  mealHoursAgo?: number;
+  activity?: {
+    type: string;
+    duration: number;
+    hoursAgo: number;
+  };
+}
+
+export interface PredictionRecord {
+  id: string;
+  userId: string;
+  input: PredictionInput;
+  result: PredictionResult;
+  createdAt: string;
+}
+
+export interface InsightExplanationInput {
+  glucose?: number;
+  riskScore: number;
+  riskLevel: "LOW" | "MEDIUM" | "HIGH";
+  confidence: number;
+  factors: {
+    glucose_factor: number;
+    insulin_factor: number;
+    meal_gap_factor: number;
+    activity_factor: number;
+    trend_factor: number;
+    time_factor: number;
+  };
+}
+
+export interface OnboardingProfileInput {
+  full_name?: string;
+  age?: number;
+  gender?: string | null;
+  weight?: number;
+  diabetes_type?: string;
+  years_since_diagnosis?: number;
+  insulin_usage?: boolean;
+  insulin_type?: string | null;
+  insulin_dosage_range?: string | null;
+  insulin_schedule?: string[];
+  monitoring_mode?: string;
+  cgm_brand?: string | null;
+  reading_frequency?: string | null;
+  meal_times?: Record<string, string>;
+  skip_meals?: boolean;
+  diet_type?: string | null;
+  activity_level?: string | null;
+  exercise_frequency?: string | null;
+  sleep_start_time?: string | null;
+  sleep_end_time?: string | null;
+  hypo_frequency?: string | null;
+  hypo_timing?: string[];
+  alert_preference?: string | null;
+  medical_summary?: string | null;
+  prescription_summary?: string | null;
+  onboarding_completed?: boolean;
+}
+
+async function getAccessToken(): Promise<string | null> {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) {
+    throw new Error(error.message || "Failed to read auth session");
+  }
+  return data.session?.access_token ?? null;
+}
+
+async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const headers = new Headers(options.headers);
+  headers.set("Content-Type", "application/json");
+
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    throw new Error("Authentication required. Please sign in again.");
+  }
+  headers.set("Authorization", `Bearer ${accessToken}`);
+
+  const response = await fetch(buildApiUrl(path), {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    let message = "Request failed";
+    try {
+      const payload = await response.json();
+      message = payload?.error || payload?.message || message;
+    } catch {
+      // Keep generic message when response is not JSON.
+    }
+    throw new Error(message);
+  }
+
+  return response.json() as Promise<T>;
+}
+
+export async function createPrediction(
+  payload: PredictionInput
+): Promise<PredictionRecord> {
+  const response = await apiRequest<{ data: PredictionRecord }>(
+    "/api/predictions",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }
+  );
+
+  return response.data;
+}
+
+export async function getPredictionHistory(limit = 20): Promise<PredictionRecord[]> {
+  const response = await apiRequest<{ data: PredictionRecord[] }>(
+    `/api/predictions?limit=${limit}`,
+    { method: "GET" }
+  );
+
+  return response.data;
+}
+
+export async function saveOnboardingProfile(
+  payload: OnboardingProfileInput
+): Promise<{ success: boolean }> {
+  const response = await apiRequest<{ data: { success: boolean } }>(
+    "/api/onboarding",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }
+  );
+
+  return response.data;
+}
+
+export async function getInsightExplanation(
+  payload: InsightExplanationInput
+): Promise<string> {
+  const response = await apiRequest<{ explanation: string }>(
+    "/api/insights/explain",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }
+  );
+
+  return response.explanation;
+}
