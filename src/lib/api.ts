@@ -1,9 +1,9 @@
 import type { PredictionResult, PredictionMode } from "@/lib/risk-engine";
 import { supabase } from "@/integrations/supabase/client";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
-function buildApiUrl(path: string): string {
+export function api(path: string): string {
   const normalizedBase = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${normalizedBase}${normalizedPath}`;
@@ -96,7 +96,7 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
   }
   headers.set("Authorization", `Bearer ${accessToken}`);
 
-  const response = await fetch(buildApiUrl(path), {
+  const response = await fetch(api(path), {
     ...options,
     headers,
   });

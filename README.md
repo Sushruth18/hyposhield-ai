@@ -630,7 +630,7 @@ Create a root `.env` file (same directory as `package.json`).
   - Supabase public URL used by browser client
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
   - Supabase publishable/anon key for browser auth
-- `VITE_API_BASE_URL` (optional)
+- `VITE_API_URL` (optional)
   - API base URL override; default is empty string (same origin)
 
 ### Example `.env`
@@ -647,7 +647,7 @@ TRUST_PROXY=1
 
 VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
-VITE_API_BASE_URL=
+VITE_API_URL=http://localhost:4000
 ```
 
 ## 11. Local Development Setup
@@ -717,7 +717,7 @@ npm run test
 - Ensure backend uses production env values (`NODE_ENV=production`)
 - Set strict `FRONTEND_ORIGIN` for CORS
 - Keep `SUPABASE_SERVICE_ROLE_KEY` and `GROQ_API_KEY` server-only
-- Configure `VITE_API_BASE_URL` if frontend and backend are not same origin
+- Configure `VITE_API_URL` if frontend and backend are not same origin
 - Apply Supabase migrations in target environment before first run
 
 ## 13. Security Considerations
