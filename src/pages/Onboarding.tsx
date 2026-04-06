@@ -118,15 +118,20 @@ export default function Onboarding() {
   };
 
   const handleStage6Skip = async () => {
+    console.log("Onboarding: handleStage6Skip called");
     await completeOnboarding(data);
   };
 
   const handleStage6Submit = async (stageData: OnboardingPatch) => {
+    console.log("Onboarding: handleStage6Submit called with stageData", stageData);
     await completeOnboarding({ ...data, ...stageData });
   };
 
   const completeOnboarding = async (finalData: OnboardingData) => {
+    console.log("Onboarding: completeOnboarding called with finalData", finalData);
+    
     if (!user?.id) {
+      console.error("Onboarding: user.id not found");
       toast({
         title: 'Session error',
         description: 'Please sign in again and retry onboarding.',
@@ -167,13 +172,16 @@ export default function Onboarding() {
         onboarding_completed: true,
       };
 
+      console.log("Onboarding: Calling saveOnboardingProfile with updatePayload", updatePayload);
+
       try {
-        await withTimeout(
+        const result = await withTimeout(
           saveOnboardingProfile(updatePayload),
           'Saving profile timed out. Please retry in a moment.'
         );
+        console.log("Onboarding: saveOnboardingProfile succeeded", result);
       } catch (saveError) {
-        console.error('Error saving onboarding:', saveError);
+        console.error('Onboarding: Error saving onboarding:', saveError);
         const errorMessage = saveError instanceof Error ? saveError.message : 'Failed to save your profile. Please try again.';
         toast({
           title: 'Error',
@@ -194,7 +202,7 @@ export default function Onboarding() {
       // The auth context is already updated optimistically, so we don't wait on a follow-up read.
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error completing onboarding:', error);
+      console.error('Onboarding: Error completing onboarding:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
       toast({
         title: 'Error',

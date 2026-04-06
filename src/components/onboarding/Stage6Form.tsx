@@ -55,6 +55,7 @@ export function Stage6Form({ initialData, onNext, onSkip, isSubmitting = false }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Stage6Form: handleSubmit called");
     e.preventDefault();
 
     // Note: In a production app, you would:
@@ -62,10 +63,18 @@ export function Stage6Form({ initialData, onNext, onSkip, isSubmitting = false }
     // 2. Send to Groq API for extraction
     // 3. Parse the response
 
-    onNext({
+    console.log("Stage6Form: Calling onNext with data", {
       medical_summary: medicalSummary,
       prescription_summary: prescriptionSummary,
     });
+
+    // CRITICAL: await onNext to properly track async completion
+    await onNext({
+      medical_summary: medicalSummary,
+      prescription_summary: prescriptionSummary,
+    });
+
+    console.log("Stage6Form: onNext completed");
   };
 
   return (
@@ -167,7 +176,11 @@ export function Stage6Form({ initialData, onNext, onSkip, isSubmitting = false }
         <Button
           type="button"
           variant="outline"
-          onClick={onSkip}
+          onClick={async () => {
+            console.log("Stage6Form: Skip button clicked");
+            await onSkip();
+            console.log("Stage6Form: onSkip completed");
+          }}
           className="flex-1"
           disabled={isSubmitting}
         >

@@ -1,6 +1,8 @@
 const DEVELOPMENT_ALLOWED_ORIGINS = new Set([
   "http://localhost:5173",
+  "http://localhost:4173",
   "http://localhost:3000",
+  "http://localhost:8080",
 ]);
 
 const ALLOWED_HEADERS = ["Authorization", "Content-Type"];

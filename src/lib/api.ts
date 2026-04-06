@@ -2,7 +2,12 @@ import type { PredictionResult, PredictionMode } from "@/lib/risk-engine";
 import { supabase } from "@/integrations/supabase/client";
 import type { AIInsights } from "@/types/ai";
 
-const API_BASE = import.meta.env.VITE_API_URL || "";
+// API_BASE strategy:
+// - Development: Use VITE_API_URL if set, otherwise use relative paths (same origin)
+// - Production (Vercel): Always use relative paths (Vercel handles /api/* routing)
+const API_BASE = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_URL || "")
+  : "";
 
 export function api(path: string): string {
   const normalizedBase = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
@@ -97,32 +102,48 @@ async function getAccessToken(): Promise<string | null> {
 }
 
 async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const fullUrl = api(path);
+  const method = options.method || "GET";
+  
+  console.log(`[API] ${method} ${fullUrl} (dev=${import.meta.env.DEV}, base="${API_BASE}")`);
+  
   const headers = new Headers(options.headers);
   headers.set("Content-Type", "application/json");
 
   const accessToken = await getAccessToken();
   if (!accessToken) {
+    console.error("[API] Error: No access token available");
     throw new Error("Authentication required. Please sign in again.");
   }
   headers.set("Authorization", `Bearer ${accessToken}`);
 
-  const response = await fetch(api(path), {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(fullUrl, {
+      ...options,
+      headers,
+    });
 
-  if (!response.ok) {
-    let message = "Request failed";
-    try {
-      const payload = await response.json();
-      message = payload?.error || payload?.message || message;
-    } catch {
-      // Keep generic message when response is not JSON.
+    console.log(`[API] ${method} ${fullUrl} → ${response.status}`);
+
+    if (!response.ok) {
+      let message = "Request failed";
+      try {
+        const payload = await response.json();
+        message = payload?.error || payload?.message || message;
+      } catch {
+        // Keep generic message when response is not JSON.
+      }
+      console.error(`[API] Error: ${response.status} ${message}`);
+      throw new Error(message);
     }
-    throw new Error(message);
-  }
 
-  return response.json() as Promise<T>;
+    return response.json() as Promise<T>;
+  } catch (error) {
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      console.error(`[API] Network error: ${error.message}`);
+    }
+    throw error;
+  }
 }
 
 export async function createPrediction(
@@ -151,6 +172,8 @@ export async function getPredictionHistory(limit = 20): Promise<PredictionRecord
 export async function saveOnboardingProfile(
   payload: OnboardingProfileInput
 ): Promise<{ success: boolean }> {
+  console.log("api.saveOnboardingProfile: called with payload", payload);
+  
   const response = await apiRequest<{ data: { success: boolean } }>(
     "/api/onboarding",
     {
@@ -159,6 +182,7 @@ export async function saveOnboardingProfile(
     }
   );
 
+  console.log("api.saveOnboardingProfile: response", response);
   return response.data;
 }
 
