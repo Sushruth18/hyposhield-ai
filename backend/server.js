@@ -396,18 +396,17 @@ app.use((err, req, res, next) => {
   console.error("API Error:", err);
 
   const status = err.status || 500;
+  const message = status >= 500 ? "Internal server error" : err.message || "Internal server error";
 
   res.status(status).json({
-    error: err.message || "Internal server error",
+    error: message,
   });
 });
 
-console.log("Backend startup summary:", {
-  NODE_ENV: envConfig.NODE_ENV,
-  PORT,
-  supabaseConnected: Boolean(supabase),
-});
+if (process.env.VERCEL !== "1" && process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`HypoShield backend API running at http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`HypoShield backend API running at http://localhost:${PORT}`);
-});
+export default app;

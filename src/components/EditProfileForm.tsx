@@ -8,6 +8,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 
+interface EditProfileFormValues {
+  full_name: string;
+  age: string;
+  diabetes_type: string;
+  diagnosis_date: string;
+  hba1c: string;
+  insulin_regimen: string;
+  last_glucose: string;
+  risk_today: string;
+}
+
 interface EditProfileFormProps {
   userId: string;
   initialData: {
@@ -26,7 +37,7 @@ interface EditProfileFormProps {
 
 export function EditProfileForm({ userId, initialData, onSuccess, onCancel }: EditProfileFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, watch } = useForm<EditProfileFormValues>({
     defaultValues: {
       full_name: initialData.full_name || '',
       age: initialData.age || '',
@@ -41,7 +52,7 @@ export function EditProfileForm({ userId, initialData, onSuccess, onCancel }: Ed
 
   const riskToday = watch('risk_today');
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: EditProfileFormValues) => {
     try {
       setIsSubmitting(true);
 

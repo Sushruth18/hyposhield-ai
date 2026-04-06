@@ -37,7 +37,7 @@ interface ProfileData {
   last_glucose?: number | null;
 
   // Stage 4
-  meal_times?: any;
+  meal_times?: Record<string, string> | null;
   skip_meals?: boolean;
   diet_type?: string | null;
   activity_level?: string | null;

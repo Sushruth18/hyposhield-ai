@@ -41,18 +41,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setOnboardingLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data: profile, error } = await supabase
         .from('profiles')
-        .select('full_name, age, diabetes_type')
+        .select('*')
         .eq('id', id)
         .single();
 
-      if (error || !data) {
+      if (error || !profile) {
         setOnboardingComplete(false);
         return false;
       }
 
-      const isComplete = Boolean(data.full_name && data.age && data.diabetes_type);
+      const profileRow = profile as {
+        onboarding_complete?: boolean | null;
+        onboarding_completed?: boolean | null;
+      };
+
+      const completionFlag =
+        profileRow.onboarding_complete ?? profileRow.onboarding_completed ?? false;
+      const isComplete = completionFlag === true;
       setOnboardingComplete(isComplete);
       return isComplete;
     } catch (error) {
@@ -111,6 +118,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    setUser(null);
+    setSession(null);
+    setOnboardingComplete(false);
+    setOnboardingLoading(false);
     await supabase.auth.signOut();
   };
 

@@ -26,6 +26,8 @@ export default function Predict() {
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
+  type SelectValue = 'glucometer' | 'cgm' | 'rapid-acting' | 'long-acting';
+
   const handlePredict = async () => {
     const mode: PredictionMode = glucoseSource === 'cgm' ? 'cgm' : glucose ? 'manual' : 'lifestyle';
 
@@ -100,7 +102,7 @@ export default function Predict() {
               <h3 className="font-semibold flex items-center gap-2 mb-3"><Droplets className="h-4 w-4 text-primary" /> Glucose Reading</h3>
               <div className="grid grid-cols-2 gap-3">
                 <Input type="number" placeholder="mg/dL" value={glucose} onChange={e => setGlucose(e.target.value)} className="bg-secondary border-border rounded-xl" />
-                <Select value={glucoseSource} onValueChange={(v: any) => setGlucoseSource(v)}>
+                <Select value={glucoseSource} onValueChange={(v) => setGlucoseSource(v as SelectValue)}>
                   <SelectTrigger className="bg-secondary border-border rounded-xl"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="glucometer">Glucometer</SelectItem>
@@ -116,7 +118,7 @@ export default function Predict() {
               <h3 className="font-semibold flex items-center gap-2 mb-3"><Syringe className="h-4 w-4 text-primary" /> Insulin Dosage</h3>
               <div className="grid grid-cols-3 gap-3">
                 <Input type="number" placeholder="Units" value={insulinDosage} onChange={e => setInsulinDosage(e.target.value)} className="bg-secondary border-border rounded-xl" />
-                <Select value={insulinType} onValueChange={(v: any) => setInsulinType(v)}>
+                <Select value={insulinType} onValueChange={(v) => setInsulinType(v as SelectValue)}>
                   <SelectTrigger className="bg-secondary border-border rounded-xl"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="rapid-acting">Rapid-acting</SelectItem>

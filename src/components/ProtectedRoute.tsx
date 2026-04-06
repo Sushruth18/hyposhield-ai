@@ -19,8 +19,12 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return <Navigate to="/login" replace />;
   }
 
-  // On onboarding page - allow access
+  // On onboarding page - only allow users who still need onboarding
   if (location.pathname === '/onboarding') {
+    if (onboardingComplete) {
+      return <Navigate to="/dashboard" replace />;
+    }
+
     return <>{children}</>;
   }
 

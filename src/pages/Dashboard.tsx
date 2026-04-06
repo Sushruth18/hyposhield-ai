@@ -4,6 +4,7 @@ import { Activity, Brain, Heart, TrendingDown, Utensils, Syringe, AlertTriangle,
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Cell } from 'recharts';
 import { Navbar } from '@/components/Navbar';
 import { GlassCard } from '@/components/GlassCard';
+import { AIInsightsCard } from '@/components/AIInsightsCard';
 import { predict, type PredictionResult } from '@/lib/risk-engine';
 import { getPredictionHistory, type PredictionRecord } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
@@ -94,6 +95,8 @@ export default function Dashboard() {
         <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-bold mb-6">
           Dashboard
         </motion.h1>
+
+        <AIInsightsCard predictions={history} />
 
         {/* Top Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

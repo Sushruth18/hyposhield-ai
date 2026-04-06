@@ -42,12 +42,14 @@ interface Stage4FormProps {
 }
 
 export function Stage4Form({ initialData, onNext }: Stage4FormProps) {
+  const mealTimes = initialData?.meal_times ?? {};
+
   const { handleSubmit, watch, setValue } = useForm<Stage4Data>({
     defaultValues: {
       meal_times: {
-        breakfast: (initialData?.meal_times as any)?.breakfast || '',
-        lunch: (initialData?.meal_times as any)?.lunch || '',
-        dinner: (initialData?.meal_times as any)?.dinner || '',
+        breakfast: mealTimes.breakfast || '',
+        lunch: mealTimes.lunch || '',
+        dinner: mealTimes.dinner || '',
       },
       skip_meals: initialData?.skip_meals || false,
       diet_type: initialData?.diet_type || '',

@@ -1,5 +1,6 @@
 import type { PredictionResult, PredictionMode } from "@/lib/risk-engine";
 import { supabase } from "@/integrations/supabase/client";
+import type { AIInsights } from "@/types/ai";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
@@ -47,6 +48,15 @@ export interface InsightExplanationInput {
     trend_factor: number;
     time_factor: number;
   };
+}
+
+export interface AIInsightReading {
+  value: number;
+  timestamp: string;
+}
+
+export interface AIInsightsRequest {
+  readings: AIInsightReading[];
 }
 
 export interface OnboardingProfileInput {
@@ -164,4 +174,15 @@ export async function getInsightExplanation(
   );
 
   return response.explanation;
+}
+
+export async function getAIInsights(payload: AIInsightsRequest): Promise<AIInsights> {
+  return apiRequest<AIInsights>("/api/insights", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function fetchAIInsights(readings: AIInsightReading[]): Promise<AIInsights> {
+  return getAIInsights({ readings });
 }

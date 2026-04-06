@@ -10,16 +10,39 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+interface EditOnboardingFormValues {
+  full_name: string;
+  age: string;
+  gender: string;
+  weight: string;
+  diabetes_type: string;
+  years_since_diagnosis: string;
+  insulin_usage: boolean;
+  insulin_type: string;
+  insulin_dosage_range: string;
+  monitoring_mode: string;
+  cgm_brand: string;
+  reading_frequency: string;
+  diet_type: string;
+  activity_level: string;
+  exercise_frequency: string;
+  skip_meals: boolean;
+  hypo_frequency: string;
+  alert_preference: string;
+  medical_summary: string;
+  prescription_summary: string;
+}
+
 interface EditOnboardingFormProps {
   userId: string;
-  initialData: any;
+  initialData: Partial<Record<string, unknown>> | null;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
 export function EditOnboardingForm({ userId, initialData, onSuccess, onCancel }: EditOnboardingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, setValue } = useForm<EditOnboardingFormValues>({
     defaultValues: {
       // Stage 1
       full_name: initialData?.full_name || '',
@@ -57,7 +80,7 @@ export function EditOnboardingForm({ userId, initialData, onSuccess, onCancel }:
 
   const insulinUsage = watch('insulin_usage');
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: EditOnboardingFormValues) => {
     try {
       setIsSubmitting(true);
 

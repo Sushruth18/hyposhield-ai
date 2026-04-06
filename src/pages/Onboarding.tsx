@@ -57,6 +57,8 @@ interface OnboardingData {
   prescription_summary?: string;
 }
 
+type OnboardingPatch = Partial<OnboardingData>;
+
 const STAGES = [
   { number: 1, title: 'Basic Profile', description: 'Tell us about yourself' },
   { number: 2, title: 'Diabetes Profile', description: 'Your diabetes details' },
@@ -98,11 +100,11 @@ export default function Onboarding() {
 
   const progress = (currentStage / STAGES.length) * 100;
 
-  const updateData = useCallback((newData: any) => {
+  const updateData = useCallback((newData: OnboardingPatch) => {
     setData((prev) => ({ ...prev, ...newData }));
   }, []);
 
-  const handleSaveAndContinue = async (stageData: any) => {
+  const handleSaveAndContinue = async (stageData: OnboardingPatch) => {
     updateData(stageData);
     setCurrentStage((prev) => prev + 1);
   };
@@ -119,7 +121,7 @@ export default function Onboarding() {
     await completeOnboarding(data);
   };
 
-  const handleStage6Submit = async (stageData: any) => {
+  const handleStage6Submit = async (stageData: OnboardingPatch) => {
     await completeOnboarding({ ...data, ...stageData });
   };
 
